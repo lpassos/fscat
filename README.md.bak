@@ -19,7 +19,7 @@ software families and scattering-related metrics. Different from other tools
 fscat depends on three programs, which must be in your system's executable path:
 
  + [src2srcml](http://www.sdml.info/): a C/C++ parser that preserves all code annotations (C-pre-processor
-directives), outputting an XML-based AST (see note). 
+directives), outputing an XML-based AST (see note). 
  + [sline](https://bitbucket.org/lpassos/sline): a line-oriented C code cleaner
  + stripcomments: a simple bash script that removes all comments from a C file. The script is defined as
 
@@ -67,7 +67,7 @@ call fscat from any place in your system ;)
 # Migration to GitHub
 
 Our existing BitBucket repository is slowly being migrated to GitHub, 
-but as long as this process is not fully completed, the BitBucket
+but as long as this process is not yet fully completed, the Bitbucket
 copy remains the official one.
 
 ---
