@@ -68,7 +68,8 @@ call fscat from any place in your system ;)
 
 Our existing BitBucket repository is slowly being migrated to GitHub, 
 but as long as this process is not fully completed, the BitBucket
-copy remains the official one.
+copy remains the official one. Our BitBucket repository can be found 
+[here](https://bitbucket.org/lpassos/fscat/overview).
 
 ---
 # Contact
