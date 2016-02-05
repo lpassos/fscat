@@ -1,0 +1,42 @@
+Feature (1): APSTUDIO_INVOKED
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/libmysqld/resource.h:1:#ifdef APSTUDIO_INVOKED
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/libmysqld/libmysqld.rc:25:#ifdef APSTUDIO_INVOKED
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/libmysqld/libmysqld.rc:116:#ifndef APSTUDIO_INVOKED
+
+-----------------------------------------------
+Feature (2): MYSQL_SERVICE_MY_SNPRINTF_INCLUDED
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/include/mysql/service_my_snprintf.h:1:#ifndef MYSQL_SERVICE_MY_SNPRINTF_INCLUDED
+
+-----------------------------------------------
+Feature (3): MYSQL_SERVICES_INCLUDED
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/include/mysql/services.h:1:#ifndef MYSQL_SERVICES_INCLUDED
+
+-----------------------------------------------
+Feature (4): MYSQL_SERVICE_THD_ALLOC_INCLUDED
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/include/mysql/service_thd_alloc.h:1:#ifndef MYSQL_SERVICE_THD_ALLOC_INCLUDED
+
+-----------------------------------------------
+Feature (5): private
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/cmd-line-utils/libedit/sys.h:21:#ifndef private
+
+-----------------------------------------------
+Feature (6): protected
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/cmd-line-utils/libedit/sys.h:24:#ifndef protected
+
+-----------------------------------------------
+Feature (7): public
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/cmd-line-utils/libedit/sys.h:18:#ifndef public
+
+-----------------------------------------------
+Feature (8): ysSSL_crypto_h__
+
+/home/leonardo/IdeaProjects/fscat/experiments/subjects/mysql-5.6.19/extra/yassl/include/openssl/crypto.h:1:#ifndef ysSSL_crypto_h__
+
+-----------------------------------------------

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+FSCAT_HOME="/home/leonardo/IdeaProjects/fscat"
+
+FSCAT_SUBJECTS="$FSCAT_HOME/experiments/subjects"
+FSCAT_RESULTS="$FSCAT_HOME/experiments/results"
+
+FSCAT_EXE="$FSCAT_HOME/scripts/fscat"
+
+cd "$FSCAT_SUBJECTS"
+
+if [[ "$#" != "1" ]] ; then
+  echo "Usage run_experiments <project-name | all>" 
+  exit 1
+elif [[ "$1" == "all" ]] ; then
+  tgzs=`ls $FSCAT_SUBJECTS`
+else
+  tgzs="$1.tar.gz"  
+fi
+
+if [ ! -d "$FSCAT_RESULTS" ]; then
+  mkdir -p $FSCAT_RESULTS
+fi
+
+for tgz in `echo "$tgzs"` ; do   
+   echo -e "Running experiment for $subject (this may take a while...)\n"
+   project=$(echo "$tgz" | sed 's/.tar.gz//')
+
+   cp -f "$tgz" /tmp               &> "$FSCAT_RESULTS/$project.log"
+   echo "Decompressing project..." &>> "$FSCAT_RESULTS/$project.log"
+   tar -xvzf "$tgz" -C /tmp        &>> "$FSCAT_RESULTS/$project.log"
+
+   "$FSCAT_EXE" "/tmp/$project" "$FSCAT_RESULTS" "$project" &>> "$FSCAT_RESULTS/$project.log"
+
+   rm -rf "/tmp/$project"
+done
+
+
+
+
+
+

@@ -1,0 +1,138 @@
+#!/bin/bash
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+
+FSCAT_HOME="/home/leonardo/IdeaProjects/fscat"
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+
+FSCAT_SCRIPTS="$FSCAT_HOME/scripts"
+FSCAT_CPPSTATS="$FSCAT_SCRIPTS/cppstats"
+
+FSCAT_EXPERIMENTS="$FSCAT_HOME/experiments"
+
+FSCAT_SUBJECTS="$FSCAT_EXPERIMENTS/subjects"
+FSCAT_RESULTS="$FSCAT_EXPERIMENTS/results"
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+function get_ifdefs {
+
+  local ft="$1" 
+  local subject="$2"
+
+  egrep -n "^#[[:space:]]*(ifdef|ifndef|if|elif).*[^a-zA-Z0-9_]+$ft([^a-zA-Z0-9_]+.*|$)" \
+     -R "$FSCAT_SUBJECTS/$subject"
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+function get_feature_diff {
+
+  local ft_set1="/tmp/diff1.$$"
+  cat "$1"  | sed 1d | cut -d ';' -f1 | sort > "$ft_set1"
+
+  local ft_set2="/tmp/diff2.$$"
+  cat "$2"  | sed 1d | cut -d ';' -f1 | sort > "$ft_set2"
+
+  comm -23 "$ft_set1" "$ft_set2"
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+function print_usage_and_exit {
+   echo "Usage: cmp_cppstats [-v|-h]"
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+
+function save_missing {
+ 
+  local subject="$1"
+
+  local s1_res="$2"
+  local s2_res="$3"
+
+  local out="$4"
+
+  local ft_count="1"
+  for ft in $(get_feature_diff "$s1_res" "$s2_res") ; do
+
+    ifdefs=$(get_ifdefs "$ft" "$subject")
+
+    echo -e "Feature ($ft_count): $ft\n" >> "$out"
+    echo "$ifdefs" >> "$out"
+    echo -e "\n-----------------------------------------------" >> "$out"
+
+    ft_count=$(( ft_count + 1 ))    
+  done
+
+  echo "$(( ft_count - 1))"
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+
+function validate_args {
+
+  for arg in "$@" ; do
+    case arg in
+   
+      -h)
+         print_usage_and_exit
+      ;;
+
+      *)
+         echo "Incorrect usage" > /dev/stderr
+         print_usage_and_exit
+      ;;
+    esac
+  done
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+
+function report_missing {
+
+  local subject="$1"
+
+  local s1="$2"
+  local s1_res="$3"
+
+  local s2="$4"
+  local s2_res="$5"
+
+  local out="$6"
+  > "$out"
+
+  missed=$(save_missing "$subject" "$s1_res" "$s2_res" "$out")
+
+  echo -e "  Nbr. of features reported by $s1, but not by $s2: $missed\n"
+}
+
+# . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    
+
+validate_args
+
+for subject in $(ls "$FSCAT_SUBJECTS") ; do
+
+  echo "--------------------------------------------------"
+  echo -e "Subject: $subject\n"
+
+  fscat_sd="$FSCAT_RESULTS/$subject.csv"
+  if [ ! -f "$fscat_sd" ] ; then
+    echo -e "File $fscat_sd does not exist. Skipping...\n"
+    continue
+  fi
+
+  cppstats_sd="$FSCAT_CPPSTATS/$subject.csv"
+  if [ ! -f "$cppstats_sd" ] ; then
+    echo -e "File $cppstats_sd does not exist. Skipping...\n"
+    continue
+  fi
+
+  report_missing "$subject" "fscat" "$fscat_sd" "cppstats" \
+                 "$cppstats_sd" "$FSCAT_CPPSTATS/cppstats_$subject.missing" 
+
+  report_missing "$subject" "cppstats" "$cppstats_sd" "fscat" \
+                  "$fscat_sd" "$FSCAT_CPPSTATS/fscat_$subject.missing"
+done

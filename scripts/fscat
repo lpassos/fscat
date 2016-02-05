@@ -1,0 +1,5 @@
+#!/bin/bash
+
+FSCAT_JAR="/home/leonardo/IdeaProjects/fscat/out/artifacts/fscat/fscat_v0.2beta.jar"
+
+java -jar "$FSCAT_JAR" $@
